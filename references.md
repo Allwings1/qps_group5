@@ -1,7 +1,7 @@
 # Literature Review on Macro Quantitative Analysis
 
 **Group 5 members**  
-**January 15, 2024**
+**January 15, 2025**
 
 ## Abstract
 This literature review explores the methodologies and applications of macro quantitative analysis, particularly in the context of stock selection. It highlights how various approaches, including statistical and machine learning models, contribute to extracting actionable insights from macroeconomic data. The review also discusses the integration of real-time data and hybrid modeling techniques, which are expected to shape the future of this field.
