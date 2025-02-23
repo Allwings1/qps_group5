@@ -21,10 +21,9 @@
 17. P. Andreini, C. Izzo, G. Ricco, "Deep Dynamic Factor Models for Macroeconomic Forecasting and Nowcasting", *Journal of Econometrics*, Vol. 220, No. 2, 2021.
 
 ## Relevance/Significance
-
-* Understanding Market Dynamics
-* Practical Applications
-* Backtest on stock market
+* Understanding Market Dynamics: Quantify how macroeconomic shifts (e.g., inflation, policy changes) drive asset price volatility and regime transitions.
+* Practical Applications: Develop adaptive portfolio strategies using real-time macro-signals and machine learning.
+* Backtest on stock market: Test frameworks on historical crises (e.g., 2008 recession, COVID-19) to evaluate robustness.
 
 ## Originality/Novelty
 
@@ -34,9 +33,11 @@
 
 
 ## Hypothesis/Research Question
-* Uncertainty and Volatility
-* Which macroeconomic indicators (e.g., GDP, inflation, interest rates) have the most significant impact on asset price volatility?
-* Do markets exhibit structural shifts in volatility following major policy changes or external shocks?
+
+* Macro Drivers :
+  Which macroeconomic indicators (e.g., GDP, inflation, PMI) most significantly explain cross-asset volatility? Do global EPU spillovers asymmetrically impact emerging vs. developed markets?
+
+* Market Shifts: Do markets exhibit structural breaks in volatility following major policy shocks (e.g., quantitative tightening)? Can regime-switching models improve risk-adjusted returns during high-volatility periods?
 
 ## Results
 
@@ -48,11 +49,19 @@
 * Development of a volatility prediction model with direct applications in investment and policy-making.
 
 ## Key Collaborators
-* Quantitative Investment Firms
-* Academic partners
-* Datasets
+* Dataset: Wind (high-frequency market data), FRED (macroeconomic indicators).
+* Industry Partners: Anonymous fund managers (strategy validation, real-world constraints).
 
 ## Methods
-* Data Integration
-* Exploratory Analysis
-* Correlation measures (Dynamic Time Warping)
+* Data Integration: Align mixed-frequency data (e.g., monthly GDP, daily stock returns) using DTW.
+Clean and normalize macro/financial datasets (Wind, Bloomberg, OECD).
+* Exploratory Analysis: Compute dynamic correlations (DCC-MIDAS) between EPU and sectoral returns.
+Identify regime transitions via HMMs and Bai-Perron structural break tests.
+* Modeling: Correlation measures (Dynamic Time Warping). Train LSTM networks on macro-time-series for volatility forecasting.
+Optimize portfolios using regime-dependent covariance matrices.
+
+## Road map
+* Finish fitting CPI,GDP before March 3rd.
+* Backtest the DTW results before March 10th.
+* Check and adjust to give a good result, last for 2 weeks before March 24th.
+* Finish the final report befor April 17th.
