@@ -30,7 +30,7 @@ class backtest_longshort:
 
     def load_index_data(self):
         """Load and preprocess index data based on the selected code."""
-        data = w.wsd(self.index_code, "open, close", self.start_date, self.end_date, "PriceAdj=F")
+        data = w.wsd(self.index_code, "open,close", self.start_date, self.end_date, "Period=M;Days=Alldays;PriceAdj=F")
         index_name = self.get_index_name(self.index_code)
 
         #检查数据完整性
@@ -54,8 +54,8 @@ class backtest_longshort:
         index_names = {
             '930050.CSI': '中证A50',
             '000001.SH': '上证指数',
-            '000300.SH': '沪深300',
-            '000852.SH': '中证1000',
+            '000300.SH': 'CSI 300',
+            '000852.SH': 'CSI 1000',
             '399006.SZ': '创业板',
             '000922.CSI': '中证红利指数',
             '000510.SH':'中证A500'
@@ -185,7 +185,8 @@ class backtest_longshort:
         custom_metrics = self.calculate_custom_metrics(strategy_returns, df['Position'], 252)
 
         # 返回结果，包括新增的超额回撤率和自定义指标
-        index_list = ['年化收益率', '年化波动率', '信息比率', '胜率', '最大回撤率', '超额净值','年化超额收益率', '超额回撤水平', '收益波动比', '收益回撤比', '最长亏损周期(月)', '亏损时间占比', '1年投资期末亏损超过10%的概率', '赔率', '换手率']
+        # index_list = ['年化收益率', '年化波动率', '信息比率', '胜率', '最大回撤率', '超额净值','年化超额收益率', '超额回撤水平', '收益波动比', '收益回撤比', '最长亏损周期(月)', '亏损时间占比', '1年投资期末亏损超过10%的概率', '赔率', '换手率']
+        index_list = ['Annualized Return', 'Annualized Volatility', 'Information Ratio', 'Win Rate', 'Maximum Drawdown Rate', 'Excess Net Value', 'Annualized Excess Return', 'Excess Drawdown Level', 'Return Volatility Ratio', 'Return Drawdown Ratio', 'Longest Loss Duration (Months)', 'Loss Time Ratio', 'Probability of Exceeding 10% Loss at 1-Year Investment Horizon', 'Odds Ratio', 'Turnover Rate']
         index_list = [return_name + i for i in index_list]
         return pd.Series(index=index_list, data=[ret, vol, ir, winrate, mdd, excess_ret_value ,excess_ret_ann, excess_mdd, ret_vol_ratio, ret_mdd_ratio, max_loss_duration, loss_time_ratio, loss_prob_10pct, custom_metrics['赔率'], custom_metrics['换手率']])
 
@@ -266,9 +267,9 @@ class backtest_longshort:
 
         # 绘制净值曲线和基准曲线
         fig1, ax1 = plt.subplots(figsize=(12, 6))
-        ax1.plot(self.df_merged.index, self.df_merged['净值'], label='择时策略', color='blue')
+        ax1.plot(self.df_merged.index, self.df_merged['净值'], label='Timing Strategy', color='blue')
         ax1.plot(self.df_merged.index, (self.df_merged[f'{self.get_index_name(self.index_code)}_close'].pct_change(1) + 1).cumprod(), label=f'{self.get_index_name(self.index_code)}（基准）', color='red')
-        ax1.set_title(f'择时策略 vs {self.get_index_name(self.index_code)}')
+        ax1.set_title(f'Timing Strategy vs {self.get_index_name(self.index_code)}')
         ax1.set_xlabel('Date')
         ax1.set_ylabel('Value')
         ax1.legend(loc='upper left')
@@ -281,24 +282,13 @@ class backtest_longshort:
         # 第二张图：绘制所有时间的累计超额收益
         fig2, ax2 = plt.subplots(figsize=(12, 6))
         ax2.fill_between(df_performance.index, 0, df_performance['累计超额收益'], color='green', alpha=0.5, label='累计超额收益')
-        ax2.set_ylabel('累计超额收益')
+        ax2.set_ylabel('Cumulative excess return')
         ax2.legend()
         # 设置日期格式
         ax2.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
         ax2.xaxis.set_major_locator(mdates.MonthLocator(interval=5))
         plt.gcf().autofmt_xdate()
 
-
-        # 第三张图：分别绘制上升市和下跌市的累计超额收益
-        fig3, ax3 = plt.subplots(figsize=(12, 6))
-        ax3.fill_between(df_performance.index, 0, df_performance['累计超额收益_上升市'], color='blue', alpha=0.5, label='上升市累计超额收益')
-        ax3.fill_between(df_performance.index, 0, df_performance['累计超额收益_下跌市'], color='red', alpha=0.5, label='下跌市累计超额收益')
-        ax3.set_ylabel('累计超额收益')
-        ax3.legend()
-        # 设置日期格式
-        ax3.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        ax3.xaxis.set_major_locator(mdates.MonthLocator(interval=5))
-        plt.gcf().autofmt_xdate()
 
         return result_df
 
